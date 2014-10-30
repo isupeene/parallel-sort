@@ -5,9 +5,13 @@ module ParallelSortContract
 	extend BasicContracts
 	include Test::Unit::Assertions
 
+	DEFAULT_COMPARATOR = lambda { |x, y| x < y }
+
 	def sort_precondition(values, time_limit, ascending, &comparator)
 		# These preconditions are not comprehensive.
 		# We don't check the arity of the indexers.
+
+		comparator ||= DEFAULT_COMPARATOR
 
 		assert(
 			values.respond_to?(:[]),
@@ -38,6 +42,8 @@ module ParallelSortContract
 	end
 
 	def sort_postcondition(values, time_limit, ascending, result, &comparator)
+		comparator ||= DEFAULT_COMPARATOR
+
 		if result
 			assert(
 				values.each_cons(2).all? { |x, y|
@@ -71,7 +77,7 @@ module ParallelSortContract
 
 		assert_equal(
 			old_hash, new_hash,
-			"The contents of the array will not be modified by sorting."
+			"The same elements will be present in the array before and after sorting."
 		)
 	end
 end
