@@ -1,7 +1,7 @@
-require_relative "../slice"
-require_relative "../threading_extensions"
-require_relative "../parallel_merge"
-require_relative "../cancellation_token" # TODO: Probably delegate to threading extensions
+require_relative "slice"
+require_relative "threading_extensions"
+require_relative "parallel_merge"
+require_relative "cancellation_token" # TODO: Probably delegate to threading extensions
 
 module ParallelSortImpl
 	include ThreadingExtensions
@@ -24,8 +24,8 @@ module ParallelSortImpl
 		return if values.length < 2
 
 		run_parallel(
-			lambda { sort_impl(values[0...values.length / 2], comparator, cancellation_token) },
-			lambda { sort_impl(values[values.length / 2...values.length], comparator, cancellation_token) }
+			lambda { sort_impl(values[0...(values.length / 2)], comparator, cancellation_token) },
+			lambda { sort_impl(values[(values.length / 2)...values.length], comparator, cancellation_token) }
 		)
 		merge(values, values.length / 2, comparator, cancellation_token)
 	end
