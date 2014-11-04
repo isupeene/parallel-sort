@@ -1,14 +1,16 @@
 require_relative "slice"
 require_relative "threading_extensions"
 require_relative "parallel_merge"
+require_relative "../contracts/parallel_sort_contract"
 
 module ParallelSortImpl
-	include ThreadingExtensions
-	include ParallelMerge
+	extend ThreadingExtensions
+	extend ParallelMerge
+	extend ParallelSortContract
 
 	DEFAULT_COMPARATOR = lambda { |x, y| x < y }
 
-	def sort(values, time_limit=nil, ascending=true, &comparator)
+	def self.sort(values, time_limit=nil, ascending=true, &comparator)
 		comparator ||= DEFAULT_COMPARATOR
 		c = ascending ?
 			comparator :
@@ -19,7 +21,7 @@ module ParallelSortImpl
 		}
 	end
 
-	def sort_impl(values, comparator, cancellation_token)
+	def self.sort_impl(values, comparator, cancellation_token)
 		return if cancellation_token.cancelled
 		return if values.length < 2
 
