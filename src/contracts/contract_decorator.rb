@@ -62,6 +62,7 @@ module ModuleContractDecorator
 	end
 
 	def method_missing(symbol, *args, &block)
+		super unless implementation.respond_to?(symbol)
 		if @@enable_contracts && !@@evaluating_contracts
 			begin
 				@@evaluating_contracts = true
