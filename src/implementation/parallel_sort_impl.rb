@@ -1,7 +1,6 @@
 require_relative "slice"
 require_relative "threading_extensions"
 require_relative "parallel_merge"
-require_relative "cancellation_token" # TODO: Probably delegate to threading extensions
 
 module ParallelSortImpl
 	include ThreadingExtensions
@@ -9,14 +8,15 @@ module ParallelSortImpl
 
 	DEFAULT_COMPARATOR = lambda { |x, y| x < y }
 
-	def sort(values, ascending=true, &comparator)
+	def sort(values, time_limit=nil, ascending=true, &comparator)
 		comparator ||= DEFAULT_COMPARATOR
 		c = ascending ?
 			comparator :
 			lambda { |x, y| comparator.call(y, x) }
 
-		source = CancellationTokenSource.new
-		sort_impl(Slice.new(values, 0, -1), c, source.token)
+		run_with_time_limit(time_limit) { |cancellation_token|
+			sort_impl(Slice.new(values, 0, -1), c, cancellation_token)
+		}
 	end
 
 	def sort_impl(values, comparator, cancellation_token)
