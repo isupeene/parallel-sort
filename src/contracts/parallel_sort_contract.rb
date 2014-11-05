@@ -1,3 +1,4 @@
+gem "test-unit"
 require 'test/unit'
 require_relative 'basic_contracts'
 

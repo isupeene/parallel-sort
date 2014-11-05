@@ -1,3 +1,4 @@
+gem "test-unit"
 require_relative 'contract_symbols'
 require 'test/unit'
 
