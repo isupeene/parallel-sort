@@ -17,7 +17,7 @@ require "./parallel_sort"
 include ParallelSort
 
 # Contracts are enabled by default. To disable them, do the following:
-# ContractDecorator.enable_contracts(false)
+# ModuleContractDecorator.enable_contracts(false)
 # And to check if they are currently enabled:
 ModuleContractDecorator.enable_contracts?
 
