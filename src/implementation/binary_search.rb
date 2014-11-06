@@ -1,3 +1,5 @@
+# Binary search that finds the first index in values of a value that is not less than target
+# based on the comparator.
 module BinarySearch
 	def binary_search(values, target, comparator)
 		return 0 if values.length == 0

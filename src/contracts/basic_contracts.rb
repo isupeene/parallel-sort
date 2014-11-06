@@ -68,6 +68,7 @@ module BasicContracts
 		end
 	end
 	
+	# Generic postcondition failure message.
 	def create_generic_postcondition_failure(type)
 		name = "generic_postcondition_failure"
 		unless type.method_defined?(name)

@@ -1,3 +1,4 @@
+# A token that indicates if the process has been cancelled.
 class CancellationToken
 	def initialize
 		@cancelled = false
@@ -11,6 +12,7 @@ class CancellationToken
 	end
 end
 
+# Wraps a Cancellation token and can cancel that token.
 class CancellationTokenSource
 	def initialize
 		@token = CancellationToken.new
@@ -18,6 +20,7 @@ class CancellationTokenSource
 
 	attr_reader :token
 
+	# Cancel token so process ends.
 	def cancel
 		token.send(:cancel)
 	end
