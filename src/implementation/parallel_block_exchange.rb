@@ -4,7 +4,7 @@ require_relative "threading_extensions"
 module ParallelBlockExchange
 	include ThreadingExtensions
 
-	# Swap elements in slice 
+	# Exchanges the block of elements in the slice below start_upper with the block of elements at and above start_upper.
 	def exchange(slice, start_upper, cancellation_token)
 		run_parallel(
 			lambda { mirror(slice[0...start_upper], cancellation_token) },
@@ -13,13 +13,12 @@ module ParallelBlockExchange
 		mirror(slice, cancellation_token)
 	end
 
-	# Call mirror implementation for slice
+	# Reverses the elements in the slice.
 	def mirror(slice, cancellation_token)
 		mirror_impl(slice, 0, slice.length / 2 - 1, cancellation_token)
 	end
 
-	# Swap elements around if slice is small, otherwise recursively call until slice is small enough.
-	# Stop if program cancelled.
+	# Reverses the elements in the slice using recursive parallel threads.
 	def mirror_impl(slice, lower, upper, cancellation_token)
 		return if cancellation_token.cancelled
 		return if slice.length < 2
