@@ -1,7 +1,7 @@
 require_relative "cancellation_token"
 
 module ThreadingExtensions
-	class WrappedError
+	class WrappedError < StandardError
 		attr_reader :wrapped_error
 		
 		def initialize(ex)
