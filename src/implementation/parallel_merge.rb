@@ -2,11 +2,14 @@ require_relative "threading_extensions"
 require_relative "parallel_block_exchange"
 require_relative "binary_search"
 
+# Implements a parallel recursive merge using the p-merge algorithm
 module ParallelMerge
 	include ThreadingExtensions
 	include BinarySearch
 	include ParallelBlockExchange
 
+	# Implements a parallel recursive merge using threads and the p-merge algorithm.
+	# Stop if token indicates program has been cancelled.
 	# TODO: Probably refactor a bit.
 	def merge(values, upper_start, comparator, cancellation_token)
 		return if cancellation_token.cancelled

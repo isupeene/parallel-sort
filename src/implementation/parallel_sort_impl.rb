@@ -3,6 +3,7 @@ require_relative "threading_extensions"
 require_relative "parallel_merge"
 require_relative "../contracts/parallel_sort_contract"
 
+# Implementation of parallel sort
 module ParallelSortImpl
 	extend ThreadingExtensions
 	extend ParallelMerge
@@ -10,6 +11,9 @@ module ParallelSortImpl
 
 	DEFAULT_COMPARATOR = lambda { |x, y| x < y }
 
+	# Sort values using merge sort. Timeout after time_limit. Sorts
+	# ascending or descending based on the given comparator or the 
+	# default comparator.
 	def self.sort(values, time_limit=nil, ascending=true, &comparator)
 		comparator ||= DEFAULT_COMPARATOR
 		c = ascending ?
@@ -21,6 +25,8 @@ module ParallelSortImpl
 		}
 	end
 
+	# Sort values using merge sort. Sorts based on given comparator
+	# and cancels if token indicates program is cancelling.
 	def self.sort_impl(values, comparator, cancellation_token)
 		return if cancellation_token.cancelled
 		return if values.length < 2
